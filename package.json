@@ -1,0 +1,13 @@
+{
+  "name": "com.chinchillada.behaviors",
+  "version": "1.0.0",
+  "displayName": "Chinchillada Behaviors",
+  "unity": "2020.3",
+  "unityRelease": "25f1",
+  "keywords": [],
+  "author": {
+    "name": "Jordy van Opstal",
+    "email": "jordy_van_opstal@live.nl",
+    "url": "https://jordyvanopstal.com/"
+  }
+}
