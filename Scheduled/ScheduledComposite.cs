@@ -1,5 +1,6 @@
 namespace Chinchillada.Behavior
 {
+    using System.Collections.Generic;
     using Sirenix.OdinInspector;
     using Sirenix.Serialization;
 
@@ -7,14 +8,12 @@ namespace Chinchillada.Behavior
     /// Scheduled composites are an alternative to the normal <see cref="CompositeBehavior"/>
     /// that use a <see cref="BehaviorScheduler"/> as an intermediary for running their child behaviors.
     /// </summary>
-    public abstract class ScheduledComposite : CompositeBehavior
+    public abstract class ScheduledComposite : ScheduledBehavior, IComposite<IBehavior>
     {
-        [OdinSerialize, Required, FindComponent(SearchStrategy.InParent)]
-        private IBehaviorScheduler scheduler;
+        [OdinSerialize, Required, FindNestedComponents]
+        private List<IBehavior> children = new List<IBehavior>();
 
-        protected IBehaviorScheduler Scheduler => this.scheduler;
-
-        protected override BehaviorStatus TickInternal() => BehaviorStatus.Suspended;
+        public List<IBehavior> Children => this.children;
 
         protected void Schedule(IBehavior behavior)
         {
@@ -28,7 +27,7 @@ namespace Chinchillada.Behavior
             child.Abort(status);
         }
 
-        protected void SubscribeToChild(IBehavior child) => child.Terminated += this.OnChildTerminated;
+        protected void SubscribeToChild(IBehavior     child) => child.Terminated += this.OnChildTerminated;
         protected void UnsubscribeFromChild(IBehavior child) => child.Terminated -= this.OnChildTerminated;
 
         protected virtual void OnChildTerminated(IBehavior child, BehaviorStatus status)
